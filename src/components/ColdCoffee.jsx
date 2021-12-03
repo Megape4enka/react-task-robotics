@@ -6,8 +6,8 @@ const ColdCoffee = ({type, sizes, price, syrups, setCoffee}) => {
     const availableSize = ['small', 'large']
     const availableSyrups = ['no', 'caramel', 'vanilla', 'chocolate']
 
-    const [activeSize, setActiveSize] = React.useState(sizes)
-    const [activeSyrups, setActiveSyrups] = React.useState(syrups)
+    const [activeSize, setActiveSize] = React.useState(availableSize.findIndex(s => s === sizes[0]))
+    const [activeSyrups, setActiveSyrups] = React.useState(availableSyrups.findIndex(s => s === syrups[0]))
 
     const onSelectSize = index => {
         setActiveSize(index)
