@@ -1,13 +1,11 @@
 import React from 'react';
-import {COLD_COFFEE} from "../constants/coldCoffee";
+import {AVAILABLE_SIZE, AVAILABLE_SYRUPS, COLD_COFFEE} from "../constants/coldCoffee";
 import classNames from "classnames";
 
 const ColdCoffee = ({type, sizes, price, syrups, setCoffee}) => {
-    const availableSize = ['small', 'large']
-    const availableSyrups = ['no', 'caramel', 'vanilla', 'chocolate']
 
-    const [activeSizeIndex, setActiveSizeIndex] = React.useState(availableSize.findIndex(s => s === sizes[0]))
-    const [activeSyrupsIndex, setActiveSyrupsIndex] = React.useState(availableSyrups.findIndex(s => s === syrups[0]))
+    const [activeSizeIndex, setActiveSizeIndex] = React.useState(AVAILABLE_SIZE.findIndex(s => s === sizes[0]))
+    const [activeSyrupsIndex, setActiveSyrupsIndex] = React.useState(AVAILABLE_SYRUPS.findIndex(s => s === syrups[0]))
 
     const onSelectSize = index => {
         setActiveSizeIndex(index)
@@ -20,9 +18,9 @@ const ColdCoffee = ({type, sizes, price, syrups, setCoffee}) => {
     const onAddCoffee = () => {
         const obj = {
             type,
-            sizes: availableSize[activeSizeIndex],
+            sizes: AVAILABLE_SIZE[activeSizeIndex],
             price,
-            syrups: availableSyrups[activeSyrupsIndex]
+            syrups: AVAILABLE_SYRUPS[activeSyrupsIndex]
         }
         setCoffee(obj)
     }
@@ -32,7 +30,7 @@ const ColdCoffee = ({type, sizes, price, syrups, setCoffee}) => {
             <h3>{COLD_COFFEE[type]}</h3>
             <div className='coffee-block'>
                 <ul>
-                    {availableSize.map((types, index) => (
+                    {AVAILABLE_SIZE.map((types, index) => (
                         <li
                             key={types}
                             className={classNames({
@@ -46,7 +44,7 @@ const ColdCoffee = ({type, sizes, price, syrups, setCoffee}) => {
                     ))}
                 </ul>
                 <ul>
-                    {availableSyrups.map((types, index) => (
+                    {AVAILABLE_SYRUPS.map((types, index) => (
                         <li
                             key={types}
                             className={classNames({
