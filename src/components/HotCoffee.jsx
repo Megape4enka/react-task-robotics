@@ -5,23 +5,23 @@ const HotCoffee = ({type, sizes, price, syrups, setCoffee}) => {
     const availableSize = ['small', 'large']
     const availableSyrups = ['no', 'caramel', 'vanilla', 'chocolate']
 
-    const [activeSize, setActiveSize] = React.useState(availableSize.findIndex(s => s === sizes[0]))
-    const [activeSyrups, setActiveSyrups] = React.useState(availableSyrups.findIndex(s => s === syrups[0]))
+    const [activeSizeIndex, setActiveSizeIndex] = React.useState(availableSize.findIndex(s => s === sizes[0]))
+    const [activeSyrupsIndex, setActiveSyrupsIndex] = React.useState(availableSyrups.findIndex(s => s === syrups[0]))
 
     const onSelectSize = index => {
-        setActiveSize(index)
+        setActiveSizeIndex(index)
     }
 
     const onSelectSyrups = index => {
-        setActiveSyrups(index)
+        setActiveSyrupsIndex(index)
     }
 
     const onAddCoffee = () => {
         const obj = {
             type,
-            sizes: availableSize[activeSize],
+            sizes: availableSize[activeSizeIndex],
             price,
-            syrups: availableSyrups[activeSyrups]
+            syrups: availableSyrups[activeSyrupsIndex]
         }
         setCoffee(obj)
     }
@@ -35,7 +35,7 @@ const HotCoffee = ({type, sizes, price, syrups, setCoffee}) => {
                         <li
                             key={types}
                             className={classNames({
-                                'active': activeSize === index,
+                                'active': activeSizeIndex === index,
                                 'disabled': !sizes.includes(types)
                             })}
                             onClick={() => onSelectSize(index)}
@@ -49,7 +49,7 @@ const HotCoffee = ({type, sizes, price, syrups, setCoffee}) => {
                         <li
                             key={types}
                             className={classNames({
-                                'active': activeSyrups === index,
+                                'active': activeSyrupsIndex === index,
                                 'disabled': !syrups.includes(types)
                             })}
                             onClick={() => onSelectSyrups(index)}
