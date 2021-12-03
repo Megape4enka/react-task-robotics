@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import ColdCoffee from "./components/ColdCoffee";
 import HotCoffee from "./components/HotCoffee";
 import axios from "axios";
+import Loader from "./components/Loader";
 
 function App() {
   // const arrCoffee = {
@@ -50,6 +51,8 @@ function App() {
 
   const [coffeeCold, setCoffeeCold] = useState([])
   const [coffeeHot, setCoffeeHot] = useState([])
+  const [coffee, setCoffee] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function fetchData() {
@@ -67,20 +70,48 @@ function App() {
     fetchData()
   }, [])
 
+  useEffect(() => {
+      if (Object.keys(coffee).length) {
+          const timer = setTimeout(() => {
+              async function fetchData() {
+                  try {
+                      const order = await axios.post('https://61a788d3387ab200171d2d86.mockapi.io/order', coffee)
+                      console.log(order.data)
+                  } catch (error) {
+                      alert('Error while requesting data :(')
+                      console.error(error)
+                  }
+              }
+              setIsLoading(true)
+              fetchData()
+          }, 5000)
+          setIsLoading(false)
+          return () => clearTimeout(timer)
+      }
+  }, [coffee])
+
+  if (!isLoading) {
+    return (
+        <div className='coffee'>
+          <Loader />
+        </div>
+    )
+  }
+
   return (
     <div className='coffee'>
-      <div>
-        <h2>Hot drinks:</h2>
-        {coffeeHot.map(obj => (
-            <HotCoffee key={obj.type} {...obj} />
-        ))}
-      </div>
-      <div>
-        <h2>Cold drinks:</h2>
-        {coffeeCold.map(obj => (
-            <ColdCoffee key={obj.type} {...obj} />
-        ))}
-      </div>
+            <div>
+              <h2>Hot drinks:</h2>
+              {coffeeHot.map(obj => (
+                  <HotCoffee setCoffee={setCoffee} key={obj.type} {...obj} />
+              ))}
+            </div>
+            <div>
+              <h2>Cold drinks:</h2>
+              {coffeeCold.map(obj => (
+                  <ColdCoffee setCoffee={setCoffee} key={obj.type} {...obj} />
+              ))}
+            </div>
     </div>
   );
 }

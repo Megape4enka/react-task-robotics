@@ -1,5 +1,6 @@
 @import "global/normalize";
 @import "global/mixins";
+@import "components/loader";
 
 .coffee {
   display: flex;
@@ -14,8 +15,8 @@
 
   &-item {
     background-color: #ffffff;
-    width: 250px;
-    padding: 20px;
+    width: 280px;
+    padding: 10px;
     margin-bottom: 10px;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -26,26 +27,32 @@
       padding-bottom: 10px;
       font-weight: 600;
     }
+  }
 
-    .coffee-block__size {
+  .coffee-block {
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+
+    ul {
       display: flex;
-      padding: 6px;
-      background-color: #f3f3f3;
-      border-radius: 10px;
+      flex: 1;
 
-      ul {
-        display: flex;
+      &:first-of-type {
+        margin-bottom: 6px;
+      }
+
+      li {
         flex: 1;
-
-        li {
-          flex: 1;
-          padding: 8px;
-          font-weight: 600;
-          font-size: 14px;
-          text-align: center;
-          margin-bottom: 5px;
-          cursor: pointer;
-        }
+        padding: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 5px;
+        cursor: pointer;
+        @include noselect();
       }
 
       .active {
@@ -59,28 +66,28 @@
         pointer-events: none;
       }
     }
+  }
 
-    .coffee-block__bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 10px;
+  .coffee-block__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
 
-      &__price {
-        font-size: 16px;
-        font-weight: 600;
-      }
+    &__price {
+      font-size: 16px;
+      font-weight: 600;
+    }
 
-      button {
-        border: none;
-        padding: 14px;
-        width: 100px;
-        border-radius: 10px;
-        cursor: pointer;
+    button {
+      border: none;
+      padding: 14px;
+      width: 100px;
+      border-radius: 10px;
+      cursor: pointer;
 
-        &:hover {
-          background-color: rgba(243, 243, 243, 0.9);
-        }
+      &:hover {
+        background-color: rgba(243, 243, 243, 0.9);
       }
     }
   }
