@@ -1,9 +1,8 @@
 import './styles/App.scss';
 import React, {useEffect, useState} from "react";
-import ColdCoffee from "./components/ColdCoffee";
-import HotCoffee from "./components/HotCoffee";
 import axios from "axios";
 import Loader from "./components/Loader";
+import CardItem from "./components/CardItem";
 
 function App() {
   // const arrCoffee = {
@@ -49,18 +48,24 @@ function App() {
   //   ]
   // }
 
-  const [coffeeCold, setCoffeeCold] = useState([])
-  const [coffeeHot, setCoffeeHot] = useState([])
-  const [coffee, setCoffee] = useState({})
+  const [coffee, setCoffee] = useState([])
+  const [order, setOrder] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function fetchData() {
       try {
         const arrCoffee = await axios.get('https://61a788d3387ab200171d2d86.mockapi.io/arrCoffee')
+        const correctCoffeeHot = arrCoffee.data[0].hot.map((i) => {
+          i.modify = 'hot'
+          return i
+        })
+        const correctCoffeeCold = arrCoffee.data[0].cold.map((i) => {
+          i.modify = 'cold'
+          return i
+        })
+        setCoffee([...correctCoffeeHot, ...correctCoffeeCold])
 
-        setCoffeeCold(arrCoffee.data[0].cold)
-        setCoffeeHot(arrCoffee.data[0].hot)
       } catch (error) {
         alert('Error while requesting data :(')
         console.error(error)
@@ -71,12 +76,12 @@ function App() {
   }, [])
 
   useEffect(() => {
-      if (Object.keys(coffee).length) {
+      if (Object.keys(order).length) {
           const timer = setTimeout(() => {
               async function fetchData() {
                   try {
-                      const order = await axios.post('https://61a788d3387ab200171d2d86.mockapi.io/order', coffee)
-                      console.log(order.data)
+                      const orderPost = await axios.post('https://61a788d3387ab200171d2d86.mockapi.io/order', order)
+                      console.log(orderPost.data)
                   } catch (error) {
                       alert('Error while requesting data :(')
                       console.error(error)
@@ -88,7 +93,7 @@ function App() {
           setIsLoading(false)
           return () => clearTimeout(timer)
       }
-  }, [coffee])
+  }, [order])
 
   if (!isLoading) {
     return (
@@ -100,18 +105,14 @@ function App() {
 
   return (
     <div className='coffee'>
-            <div>
-              <h2>Hot drinks:</h2>
-              {coffeeHot.map(obj => (
-                  <HotCoffee setCoffee={setCoffee} key={obj.type} {...obj} />
-              ))}
-            </div>
-            <div>
-              <h2>Cold drinks:</h2>
-              {coffeeCold.map(obj => (
-                  <ColdCoffee setCoffee={setCoffee} key={obj.type} {...obj} />
-              ))}
-            </div>
+        {coffee.map((item, index) => {
+          if (item.modify === 'hot') {
+            return <CardItem setOrder={setOrder}  key={item.type} {...item} index={index} />
+          }
+          if (item.modify === 'cold') {
+            return <CardItem setOrder={setOrder}  key={item.type} {...item} index={index} />
+          }
+        })}
     </div>
   );
 }
